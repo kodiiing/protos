@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthenticationService {
+    rpc Login(LoginRequest) returns (LoginResponse) {}
+    rpc Logout(LogoutRequest) returns (EmptyResponse) {}
+}
+
+message EmptyResponse {}
+
+enum Provider {
+    GITHUB = 0;
+    GITLAB = 1;
+}
+
+message LoginRequest {
+    Provider provider = 1;
+    string access_code = 2;
+}
+
+message LoginResponse {
+    string access_token = 1;
+}
+
+message LogoutRequest {
+    string access_token = 1;
+}

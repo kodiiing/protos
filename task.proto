@@ -1,0 +1,113 @@
+syntax = "proto3";
+
+// Task provides common functionality for tasks.
+package task;
+
+service TaskService {
+    // List all task that is available by a certain track ID
+    rpc ListTasks(ListTasksRequest) returns (ListTasksResponse) {}
+    // Starts a task, will marks the task as "ongoing" when viewed by the current user.
+    rpc StartTask(StartTaskRequest) returns (StartTaskResponse) {}
+    // Executes a code that resides on task if it's a coding task. Will return a test cases result.
+    rpc ExecuteCode(ExecuteCodeRequest) returns (ExecuteCodeResponse) {}
+    // Submit a task as a final submission, no more changes after this one.
+    // This should be called after StartTask rpc was called.
+    rpc SubmitTask(SubmitTaskRequest) returns (SubmitTaskResponse) {}
+    // Give an assessment to the user about the task, whether they are happy with it or they
+    // don't like the given task.
+    rpc PostTaskAssessment(PostTaskAssessmentRequest) returns (EmptyResponse) {}
+    // Submit task feedback from the user who did the task. For submitting feedback that comes
+    // from the code reviewers, see the codereview proto.
+    rpc SubmitTaskFeedback(SubmitTaskFeedbackRequest) returns (SubmitTaskFeedbackResponse) {}
+}
+
+message EmptyResponse {}
+
+message Authentication {
+    string access_token = 1;
+}
+
+message Task {
+    string id = 1;
+    string title = 2;
+    string description = 3;
+    string difficulty = 4;
+    bool completed = 5;
+    string content = 6;
+    string author = 7;
+    int64 completed_by = 8;
+    int32 satisfaction_level = 9;
+}
+
+message ListTasksRequest {
+    Authentication auth = 1;
+    string track_id = 2;
+}
+
+message ListTasksResponse {
+    repeated Task tasks = 1;
+}
+
+message StartTaskRequest {
+    Authentication auth = 1;
+    string task_id = 2;
+}
+
+message StartTaskResponse {
+    Task task = 1;
+}
+
+message SubmitTaskRequest {
+    Authentication auth = 1;
+    string task_id = 2;
+    string submission = 3;
+}
+
+message SubmitTaskResponse {
+    string next_task_id = 1;
+}
+
+message ExecuteCodeRequest {
+    Authentication auth = 1;
+    string task_id = 2;
+    string code = 3;
+}
+
+message ExecuteCodeResponse {
+    message TestCase {
+        string input = 1;
+        string expected = 2;
+        string output = 3;
+        bool success = 4;
+        bool hidden = 5;
+    }
+
+    string output = 1;
+    repeated TestCase test_cases = 2;
+    bool allowed_to_submit = 3;
+}
+
+message PostTaskAssessmentRequest {
+    Authentication auth = 1;
+    string task_id = 2;
+    int32 satisfaction_level = 3;
+    string comments = 4;
+}
+
+message SubmitTaskFeedbackRequest {
+    Authentication auth = 1;
+    string task_id = 2;
+    string feedback = 3;
+}
+
+message SubmitTaskFeedbackResponse {
+    message Feedback {
+        string author_id = 1;
+        string author_name = 2;
+        string content = 3;
+        int64 timestamp = 4;
+    }
+
+    string task_id = 1;
+    repeated Feedback feedback = 2;
+}
