@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+service UserService {
+    rpc Onboarding(OnboardingRequest) returns (EmptyResponse) {}
+}
+
+message EmptyResponse {}
+
+message Authentication {
+    string access_token = 1;
+}
+
+enum JoinReason {
+    school = 0;
+    work = 1;
+    fascinated = 2;
+    friend = 3;
+    other = 4;
+}
+
+message OnboardingRequest {
+    JoinReason reason = 1;
+    string reason_other = 2;
+    bool coded_before = 3;
+    repeated string languages = 4;
+    string target = 5;
+    Authentication auth = 6;
+}

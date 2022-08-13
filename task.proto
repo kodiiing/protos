@@ -35,7 +35,7 @@ message Task {
     bool completed = 5;
     string content = 6;
     string author = 7;
-    int64 completed_by = 8;
+    string completed_at = 8;
     int32 satisfaction_level = 9;
 }
 

@@ -5,7 +5,11 @@ package codereview;
 service CodeReviewService {
     rpc GetAvailableTaskToReview(AvailableTaskToReviewRequest) returns (AvailableTaskToReviewResponse) {}
     rpc SubmitTaskReview(SubmitTaskReviewRequest) returns (SubmitTaskReviewResponse) {}
+    rpc SubmitReviewComment(SubmitReviewCommentRequest) returns (SubmitReviewCommentResponse) {}
+    rpc ApplyAsReviewer(ApplyAsReviewerRequest) returns (EmptyResponse) {}
 }
+
+message EmptyResponse {}
 
 message Authentication {
     string access_token = 1;
@@ -19,8 +23,14 @@ message Task {
     bool completed = 5;
     string content = 6;
     string author = 7;
-    int64 completed_by = 8;
+    string completed_at = 8;
     int32 satisfaction_level = 9;
+}
+
+message Author {
+    string name = 1;
+    string profile_url = 2;
+    string picture_url = 3;
 }
 
 message AvailableTaskToReviewRequest {
@@ -32,7 +42,7 @@ message AvailableTaskToReviewResponse {
         string id = 1;
         string user_id = 2;
         string user_name = 3;
-        int64 submitted_at = 4;
+        string submitted_at = 4;
         string content = 5;
         Task task = 6;
     }
@@ -46,14 +56,39 @@ message SubmitTaskReviewRequest {
     string content = 3;
 }
 
-message SubmitTaskReviewResponse {
-    message Feedback {
-        string author_id = 1;
-        string author_name = 2;
-        string content = 3;
-        int64 timestamp = 4;
-    }
+message Conversation {
+    string id = 1;
+    Author author = 2;
+    string content = 3;
+    string created_at = 4;
+}
 
-    string task_id = 1;
+message Feedback {
+    string id = 1;
+    Author author = 2;
+    string content = 3;
+    repeated Conversation conversations = 4;
+    string created_at = 5;
+}
+
+message SubmitTaskReviewResponse {
+    string task_answer_id = 1;
     repeated Feedback feedback = 2;
+}
+
+message SubmitReviewCommentRequest {
+    Authentication auth = 1;
+    string task_answer_id = 2;
+    string feedback_id = 3;
+    string conversation_id = 4;
+    string content = 5;
+}
+
+message SubmitReviewCommentResponse {
+    string task_answer_id = 1;
+    repeated Feedback feedback = 2;
+}
+
+message ApplyAsReviewerRequest {
+    Authentication auth = 1;
 }
