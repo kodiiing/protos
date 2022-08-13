@@ -1,5 +1,7 @@
 syntax = "proto3";
 
+package user;
+
 service UserService {
     rpc Onboarding(OnboardingRequest) returns (EmptyResponse) {}
 }
