@@ -1,0 +1,101 @@
+syntax = "proto3";
+
+// Hack is a mini-forum discussion about a topic. It is encouraged
+// to the users (and reviewers) to give their tips-and-trick,
+// or other interesting thoughts that are best expressed 
+// in a short text manner. Imagine this like Hacker News
+// (the news.ycombinator.com) or Reddit, but combine it 
+// with Twitter.
+package hack;
+
+service HackService {
+    // Starts a new hack post.
+    rpc Create(CreateRequest) returns (CreateResponse) {}
+    // Upvote a hack post.
+    rpc Upvote(UpvoteRequest) returns (UpvoteResponse) {}
+    // Comment to a hack post, or reply to an existing comment.
+    rpc Comment(CommentRequest) returns (CommentResponse) {}
+    // See all hack posts, or maybe with a filter.
+    rpc List(ListRequest) returns (ListResponse) {}
+}
+
+message Authentication {
+    string access_token = 1;
+}
+
+message Author {
+    string name = 1;
+    string profile_url = 2;
+    string picture_url = 3;
+}
+
+message Hack {
+    string id = 1;
+    string title = 2;
+    string content = 3;
+    int64 upvotes = 4;
+    Author author = 5;
+    repeated Comment comments = 6;
+    string created_at = 7;
+    string updated_at = 8;
+}
+
+message Comment {
+    string id = 1;
+    string content = 2;
+    Author author = 3;
+    repeated Comment replies = 4;
+    string created_at = 5;
+}
+
+message CreateRequest {
+    string title = 1;
+    string text = 2;
+    repeated string tags = 3;
+    Authentication auth = 4;
+}
+
+message CreateResponse {
+    string id = 1;
+}
+
+message UpvoteRequest {
+    string id = 1;
+    Authentication auth = 2;
+}
+
+message UpvoteResponse {
+    bool upvoted = 1;
+    int64 score = 2;
+}
+
+message CommentRequest {
+    string hack_id = 1;
+    string parent_id = 2;
+    string text = 3;
+    Authentication auth = 4;
+}
+
+message CommentResponse {
+    string hack_id = 1;
+    string comment_id = 2;
+}
+
+message ListRequest {
+    enum SortCriteria {
+        score = 0;
+        comments = 1;
+        created_date = 2;
+        updated_date = 3;
+    }
+
+    uint32 page = 1;
+    SortCriteria sort_by = 2;
+}
+
+message ListResponse {
+    repeated Hack hacks = 1;
+    uint64 total_results = 2;
+    uint32 current_page = 3;
+    uint32 total_page = 4;
+}
