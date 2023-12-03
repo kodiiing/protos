@@ -28,9 +28,10 @@ message Authentication {
 }
 
 enum TaskDifficulty {
-    easy = 0;
-    medium = 1;
-    hard = 2;
+    TASK_DIFFICULTY_UNSPECIFIED = 0;
+    TASK_DIFFICULTY_EASY = 1;
+    TASK_DIFFICULTY_MEDIUM = 2;
+    TASK_DIFFICULTY_HARD = 3;
 }
 
 message Task {
