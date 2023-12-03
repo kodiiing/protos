@@ -10,8 +10,9 @@ service AuthenticationService {
 message EmptyResponse {}
 
 enum Provider {
-    GITHUB = 0;
-    GITLAB = 1;
+    PROVIDER_UNSPECIFIED = 0;
+    PROVIDER_GITHUB = 1;
+    PROVIDER_GITLAB = 2;
 }
 
 message LoginRequest {

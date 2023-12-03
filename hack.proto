@@ -83,10 +83,11 @@ message CommentResponse {
 
 message ListRequest {
     enum SortCriteria {
-        score = 0;
-        comments = 1;
-        created_date = 2;
-        updated_date = 3;
+        SORT_CRITERIA_UNSPECIFIED = 0;
+        SORT_CRITERIA_SCORE = 1;
+        SORT_CRITERIA_COMMENTS = 2;
+        SORT_CRITERIA_CREATED_DATE = 3;
+        SORT_CRITERIA_UPDATED_DATE = 4;
     }
 
     uint32 page = 1;
