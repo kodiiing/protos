@@ -13,11 +13,12 @@ message Authentication {
 }
 
 enum JoinReason {
-    school = 0;
-    work = 1;
-    fascinated = 2;
-    friend = 3;
-    other = 4;
+    JOIN_REASON_UNSPECIFIED = 0;
+    JOIN_REASON_SCHOOL = 1;
+    JOIN_REASON_WORK = 2;
+    JOIN_REASON_FASCINATED = 3;
+    JOIN_REASON_FRIEND = 4;
+    JOIN_REASON_OTHER = 5;
 }
 
 message OnboardingRequest {

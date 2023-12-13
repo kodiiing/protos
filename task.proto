@@ -27,11 +27,18 @@ message Authentication {
     string access_token = 1;
 }
 
+enum TaskDifficulty {
+    TASK_DIFFICULTY_UNSPECIFIED = 0;
+    TASK_DIFFICULTY_EASY = 1;
+    TASK_DIFFICULTY_MEDIUM = 2;
+    TASK_DIFFICULTY_HARD = 3;
+}
+
 message Task {
     string id = 1;
     string title = 2;
     string description = 3;
-    string difficulty = 4;
+    TaskDifficulty difficulty = 4;
     bool completed = 5;
     string content = 6;
     string author = 7;
